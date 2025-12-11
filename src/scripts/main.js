@@ -1,21 +1,10 @@
 'use strict';
 
-const table = document.querySelector('table');
+const table = document.querySelector('tbody');
 const buttonAppendRow = document.querySelector('.append-row');
 const buttonAppendCol = document.querySelector('.append-column');
 const buttonRemoveRow = document.querySelector('.remove-row');
 const buttonRemoveCol = document.querySelector('.remove-column');
-
-let countRows = table.querySelectorAll('tr').length;
-let countCols;
-
-const firstRow = table.querySelector('tr');
-
-if (firstRow) {
-  countCols = firstRow.querySelectorAll('td, th').length;
-} else {
-  countCols = 0;
-}
 
 buttonAppendRow.addEventListener('click', () => {
   if (countRows >= 10) {
@@ -79,10 +68,7 @@ buttonRemoveCol.addEventListener('click', () => {
     }
   }
 
-  if (countCols > 2) {
-    updateCounts();
-  }
-
+  updateCounts();
   updateButtons();
 });
 
@@ -112,10 +98,17 @@ function updateButtons() {
   }
 }
 
+let countRows = table.querySelectorAll('tr').length;
+let countCols;
+
 function updateCounts() {
   countRows = table.querySelectorAll('tr').length;
 
-  const firstTr = table.querySelector('tr');
+  const dataRow = table.querySelector('tr td')?.closest('tr');
 
-  countCols = firstTr ? firstTr.querySelectorAll('td, th').length : 0;
+  if (dataRow) {
+    countCols = dataRow.querySelectorAll('td').length;
+  } else {
+    countCols = table.querySelectorAll('th').length;
+  }
 }
